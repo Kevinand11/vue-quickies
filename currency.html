@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	 <title>Currency Converter</title>
+	 <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+	  <link rel="stylesheet" href="bootstrap.min.css">
+      <script src="bootstrap.min.js"></script>
+        <script src="vue.min.js"></script>
+        <script src="axios.min.js"></script>
+ </head>
+	 <body>
+	   <div id="app">
+	     <div class="container my-5">
+	       <div class="row">
+	         <div class="col-sm-6">
+	            <label>From</label>
+	            <select name="from" class="form-control" v-model="from">
+	                <option :value="key" v-for="key in currencyKeys">{{currencies[key]}}</option>
+	            </select>
+	         </div>
+	          <div class="col-sm-6">
+	            <label>To</label>
+	            <select name="to" class="form-control" v-model="to">
+	               <option :value="key" v-for="key in currencyKeys">{{currencies[key]}}</option>
+	            </select>
+	         </div>
+	       </div>
+	       <div class="row">
+	         <div class="col-sm-6 offset-sm-3">
+	           <input type="number" class="form-control my-5" placeholder="Amount" v-model="amount">
+	           <div class="text-center">
+	              <button @click="convert" class="btn btn-primary" :disabled="isDisabled">
+	                   {{ loading ? "Converting..." : "Convert" }}
+	              </button>
+	           </div>
+	         </div>
+	         </div>
+	       <div class="row">
+	         <div class="col-sm-6 offset-sm-3">
+	           <h1 class="text-center display-2 mt-5">{{result}}</h1>
+	         </div>
+	       </div>
+	     </div>
+	   </div>
+	   <script>
+	     new Vue({
+	       el:"#app",
+	       data:{
+	          currencies:{}, 
+	          amount:null,
+	          from:"NGN",
+	          to:"USD",
+	          result:0,
+	          loading:false, 
+	       }, 
+	       mounted(){      
+	          this.getCurrencies();          
+	       }, 
+	       methods:{
+	          getCurrencies(){
+	                  axios.get("https://openexchangerates.org/api/currencies.json").then(response=>{
+	                            this.currencies = response.data;
+	                      }).catch(error=>{
+	                           alert(error);
+	                      });    
+	           }, 
+	           convert(){
+	                this.loading = true;
+	                key= this.from+"_"+this.to;
+	               site = "https://free.currconv.com/api/v7/convert?q=" +key+"&compact=ultra&apiKey=8453620aee8b631a02ea";
+	               axios.get(site).then(response=>{
+	                     rate = response.data[key];
+	                     this.result = Number(this.amount * rate).toFixed(2);
+	                     this.loading=false;
+	               }).catch(error=>{
+	                     alert(error);
+	                     this.loading=false;
+	               });
+	          } 
+	        }, 
+	        computed:{
+	            currencyKeys(){
+	                return Object.keys(this.currencies);
+	            },
+	            isDisabled(){
+	                 return this.amount == 0 || !this.amount || this.loading;   
+	           },
+	         },
+	         watch:{
+	            from(){
+	                this.result = 0;
+	            },
+	            to(){
+	                 this.result = 0;
+	            },
+	            amount(){
+	                 this.result = 0;
+	            }, 
+	         }, 
+	     });
+	   </script>
+	 </body>
+ </html>
+ 

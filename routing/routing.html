@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+ <head>
+	 <title>Routing</title>
+	 <meta charset="UTF-8"/>
+	 <link rel="stylesheet" href="" type="text/css"/>
+	  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="stylesheet" href="../bootstrap.min.css">
+	  <script src="../jquery.min.js"></script>
+	  <script src="../popper.min.js"></script>
+    <script src="../bootstrap.min.js"></script>
+    <script src="../vue.min.js"></script>
+    <script src="../axios.min.js"></script>
+    <script src="../vue-router.min.js"></script>
+    <script src="../vuex.min.js"></script>
+    <style>
+          body{
+                background-color: #f5f3ef;
+          } 
+    </style>
+  </head>
+	<body>
+	      <div id="app" class="container py-1">
+	          <navbar></navbar>
+	          <router-view></router-view>
+	      </div>
+	      <script src="navbar.js"></script>
+	      <script src="signup.js"></script>
+	      <script src="home.js"></script>
+	      <script src="login.js"></script>
+	      <script src="app.js"></script>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	 <title>Shop</title>
+	 <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+	  <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../bootstrap.min.js"></script>
+    <script src="../vue.min.js"></script>
+    <script src="../axios.min.js"></script>
+     <style>
+         body{
+              background-color: #f1f1ff;
+         } 
+    </style>
+</head>
+<body class="container">
+   <div id="app">
+       <div class="row my-2">
+           <div class="col-md-7">
+                <div class="row" >
+                   <div class="col-md-6" v-for="product in products" :key="product.id">
+                          <item  :product="product" v-on:added="addToCart(product)" :carted="isInCart(product)"></item>
+                    </div>
+                </div>
+           </div>
+           <div class="col-md-5">
+                <div class=row>
+                    <div>
+                        <div class="col-md-10 offset-md-1">
+                            <cart :items="cart" v-on:removed="removeFromCart($event)" v-on:pay="payNow()"></cart>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
+   </div>
+   <script src="product.js"></script>
+   <script src="cart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

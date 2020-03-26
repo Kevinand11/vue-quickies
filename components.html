@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	 <title>Vue Components</title>
+	 <meta charset="UTF-8"/>
+	 <link rel="stylesheet" href="" type="text/css"/>
+	 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+	  <link rel="stylesheet" href="bootstrap.min.css">
+      <script src="bootstrap.min.js"></script>
+        <script src="vue.min.js"></script>
+        <script src="axios.min.js"></script>
+ </head>
+	 <body>
+	   <div id="app" class="container py-4">
+	       <div class="row">
+	          <div class="col-sm-6 offset-sm-3">
+	              <card v-on:delete="deleteArticle(article.title)" v-for="article in articles" :title="article.title" :content="article.content" ></card>
+	          </div>
+	       </div>
+	   </div>
+	   <script>
+	        Vue.component("card",{
+	                props:["title", "content"], 
+	                data(){
+	                   return {
+	                       likes:0,
+	                   }
+	                }, 
+	                template: `
+	                      <div class="card">
+	                          <div class="card-body">
+	                               <h3 class="card-title">{{title}}</h3>
+	                               <div class=" card-text">
+	                                    {{content}} 
+	                               </div>
+	                               <div class="text-center text-muted">
+	                                   {{likes}} 
+	                               </div>
+	                                <button class="btn btn-warning" @click="likes--">Unlike</button>
+	                                 <button class="btn btn-info" @click="likes++">Like</button>
+	                               <button class="btn btn-danger" @click="emitDelete">
+	                                    Delete me
+	                               </button>
+	                          </div>
+	                      </div>
+	                `,
+	                methods:{
+	                     emitDelete(){
+	                           this.$emit("delete",this.title);
+	                     }, 
+	                }, 
+	         });
+	         new Vue({
+	              el:"#app", 
+	              data:{
+	                  articles:[{title:1,content:"Number 1"},{title:2,content:"Number 2"},{title:3,content:"Number 3"},{title:4,content:"Number 5"},{title:6,content:"Number 6"},{title:7,content:"Number 7"},{title:8,content:"Number 8"} ], 
+	              }, 
+	              methods:{
+	                  deleteArticle(event){
+	                      this.articles = this.articles.filter(article=>article.title != event);
+	                  }, 
+	              }, 
+	         });
+	   </script>
+	 </body>
+ </html>
